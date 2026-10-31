@@ -345,5 +345,46 @@
     <script src="js/core.min.js"></script>
     <script src="js/script.js"></script>
     <!--coded by kraken-->
+    
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // Перегляд розділу наборів
+  const setsSection = document.querySelector('#sets');
+
+  if (setsSection && 'IntersectionObserver' in window) {
+    let viewed = false;
+
+    const observer = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting && !viewed) {
+        viewed = true;
+
+        if (typeof gtag === 'function') {
+          gtag('event', 'view_sets');
+        }
+
+        observer.disconnect();
+      }
+    }, { threshold: 0.3 });
+
+    observer.observe(setsSection);
+  }
+
+  // Перехід до конкретного набору
+  document.querySelectorAll('.sane-sets .button-primary')
+    .forEach(function(button) {
+
+      button.addEventListener('click', function() {
+        if (typeof gtag === 'function') {
+          gtag('event', 'select_set', {
+            destination_url: button.href
+          });
+        }
+      });
+
+    });
+
+});
+</script>
   </body>
 </html>
